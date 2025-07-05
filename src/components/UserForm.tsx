@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { FormData, User } from '../types/user';
+import React, { useState } from 'react';
+import { FormData } from '../types/user';
 import { FirebaseService } from '../lib/firebase-service';
 import AddUserModal from './AddUserModal';
 
@@ -24,7 +24,6 @@ const relationOptions = [
 ];
 
 export default function UserForm() {
-  const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showFatherModal, setShowFatherModal] = useState(false);
   const [showMotherModal, setShowMotherModal] = useState(false);
@@ -60,18 +59,9 @@ export default function UserForm() {
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
 
-  useEffect(() => {
-    loadUsers();
-  }, []);
 
-  const loadUsers = async () => {
-    try {
-      const allUsers = await FirebaseService.getAllUsers();
-      setUsers(allUsers);
-    } catch (error) {
-      console.error('Error loading users:', error);
-    }
-  };
+
+
 
   const validateForm = (): boolean => {
     const newErrors: Partial<FormData> = {};
@@ -108,7 +98,6 @@ export default function UserForm() {
         [`${type}Name`]: fullName
       }));
       
-      await loadUsers(); // Reload users to include new one
     } catch (error) {
       console.error('Error adding user:', error);
     }
@@ -200,7 +189,6 @@ export default function UserForm() {
         spouseRelation: '',
       });
       setErrors({});
-      await loadUsers(); // Reload users to include new ones
       
       // Hide success message after 3 seconds
       setTimeout(() => setShowSuccess(false), 3000);
@@ -216,10 +204,7 @@ export default function UserForm() {
     }
   };
 
-  const userOptions = users.map(user => ({
-    value: `${user.firstName} ${user.lastName}`,
-    label: `${user.firstName} ${user.lastName}`
-  }));
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -231,17 +216,17 @@ export default function UserForm() {
       
       <div className="max-w-4xl mx-auto px-4">
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Family Member Information</h1>
+          <h1 className="text-3xl font-bold text-black mb-8">Family Member Information</h1>
           
           <form onSubmit={onSubmit} className="space-y-6">
             {/* Personal Information Section */}
             <div className="border-b border-gray-200 pb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Personal Information</h2>
+              <h2 className="text-xl font-semibold text-black mb-4">Personal Information</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* First Name - Required */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     First Name *
                   </label>
                   <input
@@ -260,7 +245,7 @@ export default function UserForm() {
 
                 {/* Last Name - Required */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Last Name *
                   </label>
                   <input
@@ -279,7 +264,7 @@ export default function UserForm() {
 
                 {/* Middle Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Middle Name
                   </label>
                   <input
@@ -295,7 +280,7 @@ export default function UserForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 {/* Birth Date */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Birth Date
                   </label>
                   <input
@@ -308,7 +293,7 @@ export default function UserForm() {
 
                 {/* Gender */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Gender
                   </label>
                   <select
@@ -328,7 +313,7 @@ export default function UserForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 {/* Marital Status */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Marital Status
                   </label>
                   <select
@@ -347,7 +332,7 @@ export default function UserForm() {
 
                 {/* Occupation */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Occupation
                   </label>
                   <input
@@ -363,12 +348,12 @@ export default function UserForm() {
 
             {/* Address Information Section */}
             <div className="border-b border-gray-200 pb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Address Information</h2>
+              <h2 className="text-xl font-semibold text-black mb-4">Address Information</h2>
               
               <div className="grid grid-cols-1 gap-4">
                 {/* Address */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Address
                   </label>
                   <input
@@ -383,7 +368,7 @@ export default function UserForm() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* City */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-800 mb-1">
                       City
                     </label>
                     <input
@@ -397,7 +382,7 @@ export default function UserForm() {
 
                   {/* State */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-800 mb-1">
                       State
                     </label>
                     <input
@@ -411,7 +396,7 @@ export default function UserForm() {
 
                   {/* Zip Code */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-800 mb-1">
                       Zip Code
                     </label>
                     <input
@@ -426,7 +411,7 @@ export default function UserForm() {
 
                 {/* Country */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Country
                   </label>
                   <input
@@ -442,12 +427,12 @@ export default function UserForm() {
 
             {/* Cultural Information Section */}
             <div className="border-b border-gray-200 pb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Cultural Information</h2>
+              <h2 className="text-xl font-semibold text-black mb-4">Cultural Information</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Religion */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Religion
                   </label>
                   <input
@@ -461,7 +446,7 @@ export default function UserForm() {
 
                 {/* Language */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Language
                   </label>
                   <input
@@ -475,7 +460,7 @@ export default function UserForm() {
 
                 {/* Ethnicity */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Ethnicity
                   </label>
                   <input
@@ -490,7 +475,7 @@ export default function UserForm() {
 
               {/* Place of Birth */}
               <div className="mt-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-800 mb-1">
                   Place of Birth
                 </label>
                 <input
@@ -505,15 +490,15 @@ export default function UserForm() {
 
             {/* Family Information Section */}
             <div className="border-b border-gray-200 pb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Family Information</h2>
+              <h2 className="text-xl font-semibold text-black mb-4">Family Information</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Father Information */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-medium text-gray-800">Father</h3>
+                  <h3 className="text-lg font-medium text-black">Father</h3>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-800 mb-1">
                       Father's Name
                     </label>
                     <div className="flex gap-2">
@@ -535,7 +520,7 @@ export default function UserForm() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-800 mb-1">
                       Relation to Father
                     </label>
                     <select
@@ -553,10 +538,10 @@ export default function UserForm() {
 
                 {/* Mother Information */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-medium text-gray-800">Mother</h3>
+                  <h3 className="text-lg font-medium text-black">Mother</h3>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-800 mb-1">
                       Mother's Name
                     </label>
                     <div className="flex gap-2">
@@ -578,7 +563,7 @@ export default function UserForm() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-800 mb-1">
                       Relation to Mother
                     </label>
                     <select
@@ -597,11 +582,11 @@ export default function UserForm() {
 
               {/* Spouse Information */}
               <div className="mt-6 space-y-4">
-                <h3 className="text-lg font-medium text-gray-800">Spouse</h3>
+                <h3 className="text-lg font-medium text-black">Spouse</h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-800 mb-1">
                       Spouse's Name
                     </label>
                     <div className="flex gap-2">
@@ -623,7 +608,7 @@ export default function UserForm() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-800 mb-1">
                       Relation to Spouse
                     </label>
                     <select
@@ -643,12 +628,12 @@ export default function UserForm() {
 
             {/* Additional Information Section */}
             <div className="border-b border-gray-200 pb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Additional Information</h2>
+              <h2 className="text-xl font-semibold text-black mb-4">Additional Information</h2>
               
               <div className="space-y-4">
                 {/* Family ID */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Family ID
                   </label>
                   <input
@@ -662,7 +647,7 @@ export default function UserForm() {
 
                 {/* Tell Me More */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Tell Me More
                   </label>
                   <textarea
