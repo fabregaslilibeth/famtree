@@ -59,10 +59,6 @@ export default function UserForm() {
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
 
-
-
-
-
   const validateForm = (): boolean => {
     const newErrors: Partial<FormData> = {};
     
